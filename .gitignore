@@ -5,6 +5,7 @@
 
 /dataset
 *.npy
+test*.ipynb
 
 ### macOS ###
 # General
