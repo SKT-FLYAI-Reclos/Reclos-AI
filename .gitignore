@@ -6,6 +6,7 @@
 /dataset
 *.npy
 test*.ipynb
+/model
 
 ### macOS ###
 # General
