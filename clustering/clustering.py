@@ -22,14 +22,12 @@ def initialize(**kwargs):
     
     # Load image numbers list
     img_list_upper = []
-    # for img in os.listdir("dataset/DressCode/upper_body/images/"):
-    for img in os.listdir("C:/Users/jonghui/Downloads/DressCode/cloth/upper_body/"):
+    for img in os.listdir("dataset/DressCode/upper_body/images/"):
         if img.endswith("1.jpg"):
             img_list_upper.append(img)
 
     img_list_lower = []
-    # for img in os.listdir("dataset/DressCode/lower_body/images/"):
-    for img in os.listdir("C:/Users/jonghui/Downloads/DressCode/cloth/lower_body/"):
+    for img in os.listdir("dataset/DressCode/lower_body/images/"):
         if img.endswith("1.jpg"):
             img_list_lower.append(img)
 
@@ -58,6 +56,13 @@ def initialize(**kwargs):
     features_upper = np.load('./features_grey_upper.npy')
     features_lower = np.load('./features_grey_lower.npy')
 
+    # Clustering
+    kmeans_upper = KMeans(n_clusters=100, random_state=22)
+    clusters_upper = kmeans_upper.fit_predict(features_upper)
+
+    kmeans_lower = KMeans(n_clusters=100, random_state=22)
+    clusters_lower = kmeans_lower.fit_predict(features_lower)
+
     # Load the cluster groups dict back from the JSON file
     with open('cluster_result_upper.json', 'r') as json_file:
         cluster_groups_upper = json.load(json_file)
@@ -71,8 +76,10 @@ def initialize(**kwargs):
         'transform': transform,
         'model': model,
         'features_upper': features_upper,
+        'kmeans_upper': kmeans_upper,
         'cluster_groups_upper': cluster_groups_upper,
         'features_lower': features_lower,
+        'kmeans_lower': kmeans_lower,
         'cluster_groups_lower': cluster_groups_lower
     }
 
@@ -124,3 +131,7 @@ def run_inference(is_upper, img_path, INIT_VARS=None, **kwargs):
     return {
         'sorted_images_list': sorted_images_list
     }
+
+# # initialize()
+# a = run_inference(True, "C:/Users/jonghui/Downloads/DressCode/cloth/upper_body/000001_1.jpg", INIT_VARS=initialize())
+# print(a)
