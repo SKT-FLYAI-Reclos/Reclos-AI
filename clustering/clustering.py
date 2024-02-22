@@ -1,6 +1,11 @@
 import numpy as np
 import pandas as pd
 import os
+from PIL import Image
+import matplotlib.pyplot as plt
+import argparse
+import torch
+
 from torch.utils.data import Dataset, DataLoader
 import torchvision.transforms as transforms
 import torch
@@ -14,36 +19,19 @@ def initialize(**kwargs):
     print("\n--- Initialize Clustering ---\n")
     SETTINGS = argparse.Namespace(**kwargs)
     print(f'SETTINGS : {SETTINGS}')
-
-    # Check if the dataset dataroot is provided
-    if SETTINGS.dataset == "vitonhd" and SETTINGS.vitonhd_dataroot is None:
-        raise ValueError("VitonHD dataroot must be provided")
-    if SETTINGS.dataset == "dresscode" and SETTINGS.dresscode_dataroot is None:
-        raise ValueError("DressCode dataroot must be provided")
-    
-    # Enable TF32 for faster inference on Ampere GPUs,
-    # cf https://pytorch.org/docs/stable/notes/cuda.html#tensorfloat-32-tf32-on-ampere-devices
-    if SETTINGS.allow_tf32:
-        torch.backends.cuda.matmul.allow_tf32 = True
-
-    # Setup accelerator and device.
-    accelerator = Accelerator(mixed_precision=SETTINGS.mixed_precision)
-    device = accelerator.device
-
-    # If passed along, set the training seed now.
-    if SETTINGS.seed is not None:
-        set_seed(SETTINGS.seed)
     
     # Load image numbers list
     img_list_upper = []
-    for img in os.listdir("C:/reClos/dataset/DressCode/cloth/upper_body/"):
+    # for img in os.listdir("dataset/DressCode/upper_body/images/"):
+    for img in os.listdir("C:/Users/jonghui/Downloads/DressCode/cloth/upper_body/"):
         if img.endswith("1.jpg"):
-            img_list.append(img)
+            img_list_upper.append(img)
 
     img_list_lower = []
-    for img in os.listdir("C:/reClos/dataset/DressCode/cloth/lower_body/"):
+    # for img in os.listdir("dataset/DressCode/lower_body/images/"):
+    for img in os.listdir("C:/Users/jonghui/Downloads/DressCode/cloth/lower_body/"):
         if img.endswith("1.jpg"):
-            img_list.append(img)
+            img_list_lower.append(img)
 
     # Define transformations
     transform = transforms.Compose([
@@ -59,6 +47,11 @@ def initialize(**kwargs):
 
     # Adapt the model to use it as a feature extractor
     model = torch.nn.Sequential(*(list(model.children())[:-1]))
+
+    if torch.cuda.is_available():
+        device = torch.device("cuda")
+    else:
+        device = torch.device("cpu")
     model = model.to(device)
 
     # Load the features
@@ -81,8 +74,6 @@ def initialize(**kwargs):
         'cluster_groups_upper': cluster_groups_upper,
         'features_lower': features_lower,
         'cluster_groups_lower': cluster_groups_lower
-        
-
     }
 
 def run_inference(is_upper, img_path, INIT_VARS=None, **kwargs):
