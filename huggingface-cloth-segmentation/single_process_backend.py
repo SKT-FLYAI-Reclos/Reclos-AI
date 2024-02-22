@@ -95,7 +95,7 @@ def generate_mask(im_name, input_image, output_dir, net, device = 'cpu'): # pale
     mask = (output_arr != 0).astype(np.uint8) * 255
     mask_img = Image.fromarray(mask[0], mode='L')
     mask_img = mask_img.resize(img_size, Image.BICUBIC)
-    mask_img.save(os.path.join(output_dir, f'{im_name}.jpg')) # - mask 저장
+    mask_img.save(os.path.join(output_dir, f'{im_name}')) # - mask 저장
     
     return mask_img   
 
@@ -123,10 +123,6 @@ def initialize(**kwargs):
     print(f"SETTINGS: {SETTINGS}")
     print(f"pwd: {os.getcwd()}")
     
-    # # Check if the dataset dataroot is provided
-    # if SETTINGS.dataset == "cloth" and SETTINGS.cloth_dataroot is None:
-    #     raise ValueError("Cloth dataroot must be provided")
-    
     # cuda
     # Setup accelerator and device.
     accelerator = Accelerator(mixed_precision=SETTINGS.mixed_precision) # 알아서 적합한 환경 설정
@@ -139,8 +135,7 @@ def initialize(**kwargs):
     mask_img_name = im_name + ".jpg"
     img = Image.open(SETTINGS.input_image).convert('RGB') # 이미지 RGB로 열기
     
-    # mask_img = generate_mask(im_name, img, output_dir, net=model, device=device)
-    print("\n--- Ladi-Vton initialized ---\n")
+    print("\n--- Cloth-Mask initialized ---\n")
     
     args = {
         "device": device,
@@ -154,7 +149,7 @@ def initialize(**kwargs):
 def run_process(INIT_VARS=None, **kwargs):
     SETTINGS = kwargs.get("SETTINGS", argparse.Namespace(**kwargs))
     
-    device = INIT_VARS["devuce"]
+    device = INIT_VARS["device"]
     model = INIT_VARS["model"]
     mask_img_name = INIT_VARS["mask_img_name"]
     input_img = INIT_VARS["input_img"]
@@ -170,38 +165,9 @@ def run_process(INIT_VARS=None, **kwargs):
 ClothMask_SETTINGS = {
         # 여기서는 github에 있는 사진 사용
         "mixed_precision" : None,
-        "checkpoint_path": "./model/cloth_segm.pth",
-        "input_image": ".\\images\\input\\cloth-mask\\010318_1.jpg", # cloth 사진
-        "output_dir": ".\\images\\output\\cloth-mask",  # mask-image 저장 경로
-        
-        #"cloth_dataroot": "cloth 폴더 경로",  # Specify if using VitonHD dataset
-        #"dataset": "cloth 폴더 ",  # Or "dresscode", depending on which dataset you're using - 음 mask 데이터 셋 위치 - cloth
-        # "use_png": False,  # Set to True if you prefer PNG over JPG
+        "checkpoint_path": "./model/cloth_segm.pth", #
+        "input_image": ".\\input\\00001_00.jpg", #".\\images\\input\\cloth-mask\\00001_00.jpg", # cloth 사진
+        "output_dir": "..\\huggingface-cloth-segmentation" # ".\\images\\output\\cloth-mask",  # mask-image 저장 경로
     }
-INIT_VARS = single_process_backend.initialize(**ClothMask_SETTINGS)
-
-
-    
-    # def main(args):
-    
-#     device = 'cuda:0' if args.cuda else 'cpu'
-
-#     # Create an instance of your model
-#     model = load_seg_model(args.checkpoint_path, device=device)
-
-#     im_name, _ = os.path.splitext(os.path.basename(args.image)) # 파일명 생성
-#     img = Image.open(args.image).convert('RGB') # 이미지 RGB로 열기
-#     mask_img = generate_mask(im_name, img, net=model, device=device)
-#     print("결과가 저장되었습니다")
-    
-
-# if __name__ == '__main__':
-#     parser = argparse.ArgumentParser(description='Help to set arguments for Cloth Segmentation.')
-#     parser.add_argument('--image', type=str, help='Path to the input image') # input_image
-#     parser.add_argument('--cuda', action='store_true', help='Enable CUDA (default: False)') # cuda
-#     parser.add_argument('--checkpoint_path', type=str, default='./model/cloth_segm.pth', help='Path to the checkpoint file') # checkpoint_path
-#     parser.add_argument("--output", type=str, default='../data/task/cloth-mask', help='Path to the output file') # output
-#     args = parser.parse_args()
-
-#     main(args)
-    
+INIT_VARS = initialize(**ClothMask_SETTINGS)
+run_process(INIT_VARS)    
