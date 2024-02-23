@@ -1,4 +1,5 @@
-from network import U2NET
+from .network import U2NET
+from .options import opt
 
 import os
 from PIL import Image
@@ -13,9 +14,7 @@ import torch.nn.functional as F
 import torchvision.transforms as transforms
 
 from collections import OrderedDict
-from options import opt
 
-# ---
 from accelerate import Accelerator
 from pathlib import Path
 PROJECT_ROOT = Path(__file__).absolute().parents[1].absolute()
@@ -23,7 +22,7 @@ PROJECT_ROOT = Path(__file__).absolute().parents[1].absolute()
 
 def load_checkpoint(model, checkpoint_path):
     if not os.path.exists(checkpoint_path):
-        print("----No checkpoints at given path----")
+        print("No checkpoints at given path")
         return
     model_state_dict = torch.load(checkpoint_path, map_location=torch.device("cpu"))
     new_state_dict = OrderedDict()
@@ -32,7 +31,7 @@ def load_checkpoint(model, checkpoint_path):
         new_state_dict[name] = v
 
     model.load_state_dict(new_state_dict)
-    print("----checkpoints loaded from path: {}----".format(checkpoint_path))
+    print("checkpoints loaded from path: {}".format(checkpoint_path))
     return model
 
 class Normalize_image(object):
@@ -102,7 +101,7 @@ def generate_mask(im_name, input_image, output_dir, net, device = 'cpu'): # pale
 
 def check_or_download_model(file_path):
     if not os.path.exists(file_path):
-        print("please model download!")
+        print("model not found")
        
     else:
         print("Model already exists.")
@@ -120,8 +119,7 @@ def load_seg_model(checkpoint_path, device='cpu'):
 def initialize(**kwargs):
     print("\n--- Initializing Cloth-Mask ---\n")
     SETTINGS = argparse.Namespace(**kwargs)
-    print(f"SETTINGS: {SETTINGS}")
-    print(f"pwd: {os.getcwd()}")
+    print(f"CLOTH SEGMENTATION SETTINGS: {SETTINGS}")
     
     # cuda
     # Setup accelerator and device.
@@ -135,16 +133,13 @@ def initialize(**kwargs):
     mask_img_name = im_name + ".jpg"
     img = Image.open(SETTINGS.input_image).convert('RGB') # 이미지 RGB로 열기
     
-    print("\n--- Cloth-Mask initialized ---\n")
-    
-    args = {
+    return {
         "device": device,
         "model" : model,
         "mask_img_name" : mask_img_name,
         "input_img" : img,
         "output_dir" : SETTINGS.output_dir,
     }
-    return args
 
 def run_process(INIT_VARS=None, **kwargs):
     SETTINGS = kwargs.get("SETTINGS", argparse.Namespace(**kwargs))
@@ -159,15 +154,3 @@ def run_process(INIT_VARS=None, **kwargs):
     mask_img = generate_mask(mask_img_name, input_img, output_dir, net=model, device=device)
     print("Make mask-image")
     
-    
-    
-    
-ClothMask_SETTINGS = {
-        # 여기서는 github에 있는 사진 사용
-        "mixed_precision" : None,
-        "checkpoint_path": "./model/cloth_segm.pth", #
-        "input_image": ".\\input\\00001_00.jpg", #".\\images\\input\\cloth-mask\\00001_00.jpg", # cloth 사진
-        "output_dir": "..\\huggingface-cloth-segmentation" # ".\\images\\output\\cloth-mask",  # mask-image 저장 경로
-    }
-INIT_VARS = initialize(**ClothMask_SETTINGS)
-run_process(INIT_VARS)    

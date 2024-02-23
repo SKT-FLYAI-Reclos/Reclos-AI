@@ -17,17 +17,19 @@ from sklearn.metrics.pairwise import euclidean_distances
 
 def initialize(**kwargs):
     print("\n--- Initialize Clustering ---\n")
+    
     SETTINGS = argparse.Namespace(**kwargs)
-    print(f'SETTINGS : {SETTINGS}')
+    upper_path = SETTINGS.dataset_path + "/upper_body/images/"
+    lower_path = SETTINGS.dataset_path + "/lower_body/images/"
     
     # Load image numbers list
     img_list_upper = []
-    for img in os.listdir("dataset/DressCode/upper_body/images/"):
+    for img in os.listdir(upper_path):
         if img.endswith("1.jpg"):
             img_list_upper.append(img)
 
     img_list_lower = []
-    for img in os.listdir("dataset/DressCode/lower_body/images/"):
+    for img in os.listdir(lower_path):
         if img.endswith("1.jpg"):
             img_list_lower.append(img)
 
@@ -53,20 +55,20 @@ def initialize(**kwargs):
     model = model.to(device)
 
     # Load the features
-    features_upper = np.load('./features_grey_upper.npy')
-    features_lower = np.load('./features_grey_lower.npy')
+    features_upper = np.load(SETTINGS.upper_model_path)
+    features_lower = np.load(SETTINGS.lower_model_path)
 
     # Clustering
     kmeans_upper = KMeans(n_clusters=100, random_state=22)
-    clusters_upper = kmeans_upper.fit_predict(features_upper)
+    kmeans_upper.fit_predict(features_upper)
 
     kmeans_lower = KMeans(n_clusters=100, random_state=22)
-    clusters_lower = kmeans_lower.fit_predict(features_lower)
+    kmeans_lower.fit_predict(features_lower)
 
     # Load the cluster groups dict back from the JSON file
-    with open('cluster_result_upper.json', 'r') as json_file:
+    with open(SETTINGS.cluster_upper_result_path, 'r') as json_file:
         cluster_groups_upper = json.load(json_file)
-    with open('cluster_result_lower.json', 'r') as json_file:
+    with open(SETTINGS.cluster_lower_result_path, 'r') as json_file:
         cluster_groups_lower = json.load(json_file)
 
     return {
@@ -83,10 +85,12 @@ def initialize(**kwargs):
         'cluster_groups_lower': cluster_groups_lower
     }
 
-def run_inference(is_upper, img_path, INIT_VARS=None, **kwargs):
+
+def run_inference(is_upper, img_path, INIT_VARS=None):
     transform = INIT_VARS['transform']
     model = INIT_VARS['model']
     device = INIT_VARS['device']
+    
     if is_upper: # upper body
         img_list = INIT_VARS['img_list_upper']
         features = INIT_VARS['features_upper']
