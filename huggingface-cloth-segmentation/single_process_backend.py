@@ -129,15 +129,9 @@ def initialize(**kwargs):
     # Create an instance of your model
     model = load_seg_model(SETTINGS.checkpoint_path, device=device)
     
-    im_name, _ = os.path.splitext(os.path.basename(SETTINGS.input_image)) # 파일명 생성
-    mask_img_name = im_name + ".jpg"
-    img = Image.open(SETTINGS.input_image).convert('RGB') # 이미지 RGB로 열기
-    
     return {
         "device": device,
         "model" : model,
-        "mask_img_name" : mask_img_name,
-        "input_img" : img,
         "output_dir" : SETTINGS.output_dir,
     }
 
@@ -146,11 +140,13 @@ def run_process(INIT_VARS=None, **kwargs):
     
     device = INIT_VARS["device"]
     model = INIT_VARS["model"]
-    mask_img_name = INIT_VARS["mask_img_name"]
-    input_img = INIT_VARS["input_img"]
     output_dir = INIT_VARS["output_dir"]
     
     # make mask image & save
-    mask_img = generate_mask(mask_img_name, input_img, output_dir, net=model, device=device)
+    im_name, _ = os.path.splitext(os.path.basename(SETTINGS.input_image)) # 파일명 생성
+    mask_img_name = im_name + ".jpg"
+    img = Image.open(SETTINGS.input_image).convert('RGB') # 이미지 RGB로 열기    
+    
+    generate_mask(mask_img_name, img, output_dir, net=model, device=device)
     print("Make mask-image")
     
