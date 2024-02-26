@@ -85,7 +85,29 @@ def initialize(**kwargs):
         'cluster_groups_lower': cluster_groups_lower
     }
 
-
+def convert_png_to_jpg_if_needed(img_path):
+    # 파일 확장자 확인
+    filename, file_extension = os.path.splitext(img_path)
+    if file_extension.lower() == '.png':
+        # PNG 이미지를 열기
+        png_image = Image.open(img_path)
+        # RGB 모드로 변환하고 투명도를 흰색 배경으로 대체
+        if png_image.mode in ('RGBA', 'LA'):
+            # 투명도 채널 확인 및 흰색 배경 이미지 생성
+            background = Image.new('RGB', png_image.size, (255, 255, 255))
+            # PNG 이미지 위에 흰색 배경 합성
+            background.paste(png_image, mask=png_image.split()[3])  # 3은 알파 채널
+            png_image = background
+        # JPG 파일로 저장 (임시 파일 이름 생성)
+        # jpg_img_path = filename + '_white_bg.jpg' # 범순
+        jpg_img_path = '.\\images\\input\\ladi_vton\\upper_body\\1.jpg'
+        png_image.save(jpg_img_path, 'JPEG', quality=90)
+        print('convert png to jpg with white background')
+        return jpg_img_path
+    else:
+        # 이미지 경로가 PNG가 아닐 경우 원본 경로 반환
+        return img_path
+    
 def run_inference(is_upper, img_path, INIT_VARS=None):
     transform = INIT_VARS['transform']
     model = INIT_VARS['model']
@@ -102,8 +124,11 @@ def run_inference(is_upper, img_path, INIT_VARS=None):
         features = INIT_VARS['features_lower']
         kmeans = INIT_VARS['kmeans_lower']
         cluster_groups = INIT_VARS['cluster_groups_lower']
-
-    test_img = plt.imread(img_path)
+    
+    # test_img = plt.imread(img_path)
+    jpg_img_path = convert_png_to_jpg_if_needed(img_path)
+    # 변환된 JPG 이미지 읽기
+    test_img = plt.imread(jpg_img_path)    
 
     test_img_transformed = transform(Image.fromarray(test_img))
     test_img_feature = model(test_img_transformed.unsqueeze(0).to(device)).flatten(start_dim=1).detach().cpu().numpy()
@@ -111,7 +136,7 @@ def run_inference(is_upper, img_path, INIT_VARS=None):
     # Predict the cluster for the test image
     test_cluster = kmeans.predict(test_img_feature) # predict the cluster number for the test image
     # test image 클러스터에 속하는 이미지들의 파일명
-    test_cluster_img_list = cluster_groups[str(test_cluster[0])]
+    test_cluster_img_list = cluster_groups[str(test_cluster[0])]                ### TODO
     test_cluster_img_idx_list = [i for i, j in enumerate(img_list) if j in test_cluster_img_list]
 
     ### 유클리디안 거리로 유사도 계산

@@ -132,21 +132,29 @@ def initialize(**kwargs):
     return {
         "device": device,
         "model" : model,
-        "output_dir" : SETTINGS.output_dir,
     }
 
-def run_process(INIT_VARS=None, **kwargs):
-    SETTINGS = kwargs.get("SETTINGS", argparse.Namespace(**kwargs))
+def convert_jpg_to_png(jpg_img_path):
+    # JPG 파일 열기
+    jpg_image = Image.open(jpg_img_path)
     
+    # 파일 이름 변경 (확장자 제외)
+    png_img_path = jpg_img_path.rsplit('.', 1)[0] + '.png'
+    
+    # PNG 파일로 저장
+    jpg_image.save(png_img_path, 'PNG')
+
+    return png_img_path
+
+def run_inference(img_path, output_dir, INIT_VARS=None):
     device = INIT_VARS["device"]
     model = INIT_VARS["model"]
-    output_dir = INIT_VARS["output_dir"]
     
-    # make mask image & save
-    im_name, _ = os.path.splitext(os.path.basename(SETTINGS.input_image)) # 파일명 생성
-    mask_img_name = im_name + ".jpg"
-    img = Image.open(SETTINGS.input_image).convert('RGB') # 이미지 RGB로 열기    
+    mask_img_name = "clothseg.png"
+    convert_jpg_to_png(img_path)
+    
+    img = Image.open(img_path).convert('RGB') # 이미지 RGB로 열기    
     
     generate_mask(mask_img_name, img, output_dir, net=model, device=device)
-    print("Make mask-image")
+    return os.path.join(output_dir, mask_img_name)
     
