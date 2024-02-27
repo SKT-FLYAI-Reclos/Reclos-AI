@@ -161,6 +161,5 @@ def run_inference(is_upper, img_path, INIT_VARS=None):
         'sorted_images_list': sorted_images_list
     }
 
-# # initialize()
-# a = run_inference(True, "C:/Users/jonghui/Downloads/DressCode/cloth/upper_body/000001_1.jpg", INIT_VARS=initialize())
+# a = run_inference(True, "../../data/cloth/upper_body/000001_1.jpg", INIT_VARS=initialize())
 # print(a)

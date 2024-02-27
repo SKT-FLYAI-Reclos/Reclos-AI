@@ -7,12 +7,12 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import os
 
-# %%
-dataset_path = "C:/reClos/dataset/DressCode/cloth/upper_body/"
+# %% 
+dataset_path = "C:/reClos/dataset/DressCode/cloth/upper_body/" # 데이터 경로
 
 img_list = []
 for img in os.listdir(dataset_path):
-    if img.endswith("1.jpg"):
+    if img.endswith("1.jpg"): # 1.jpg로 끝나면 추가
         img_list.append(img)
 
 print(img_list)
@@ -30,13 +30,13 @@ class CustomImageDataset(Dataset):
     def __init__(self, directory, transform=None):
         self.directory = directory
         self.transform = transform
-        self.images = [f for f in os.listdir(directory) if os.path.isfile(os.path.join(directory, f))]
+        self.images = [f for f in os.listdir(directory) if os.path.isfile(os.path.join(directory, f))] # 존재하는 파일이면 해당 파일명들 반환
 
     def __len__(self):
         return len(self.images)
 
     def __getitem__(self, idx):
-        img_name = os.path.join(self.directory, self.images[idx])
+        img_name = os.path.join(self.directory, self.images[idx]) # 전체 파일 경로
         # image = Image.open(img_name).convert('RGB')
         image = Image.open(img_name).convert('L') # load image grey scale
         if self.transform:
@@ -118,7 +118,7 @@ for i, cluster in enumerate(clusters_u):
     if cluster not in cluster_groups_u:
         cluster_groups_u[cluster] = []
     
-    cluster_groups_u[cluster].append(img_list[i])
+    cluster_groups_u[cluster].append(img_list[i]) # 파일명 저장
 
 # %%
 def print_cluster_img(num):
@@ -156,11 +156,11 @@ test_cluster = kmeans_u.predict(test_img_feature) # predict the cluster number f
 print("Test Image Cluster:", test_cluster)
 
 # Plot the images in the same cluster as the test image
-print_cluster_img(test_cluster[0])
+print_cluster_img(test_cluster[0]) # [0] 리스트 벗겨주기
 
 
 # %%
-cluster_groups_u[test_cluster[0]]
+cluster_groups_u[test_cluster[0]] # 특정 그룹 선정
 
 # %%
 # 예측 클러스터에 속하는 이미지들의 파일명을 저장하는 리스트 생성

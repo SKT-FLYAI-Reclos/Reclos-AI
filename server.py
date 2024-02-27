@@ -135,7 +135,7 @@ def clustering():
         
         sorted_list = cluster.run_inference(is_upper, img_path, CLUSTER_INIT_VARS)
         cluster_id_list = sorted_list['sorted_images_list'].tolist()
-        cluster_id_list = [int(i.split('_')[0]) for i in cluster_id_list]
+        cluster_id_list = [i.split('_')[0] for i in cluster_id_list]
         
         print(f'cluster_id_list: {cluster_id_list}')
         
