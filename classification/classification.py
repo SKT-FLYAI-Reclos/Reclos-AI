@@ -33,7 +33,7 @@ def initialize(**kwargs):
     ])
     
     # Initialize the pre-trained model
-    model_path = os.path.join(SETTINGS.model_path, "resnet18_rgb_v1.pth") # RGB 학습 모델, 변경 가능성
+    model_path = os.path.join(SETTINGS.model_path, "resnet101_rgb_v1.pth") # RGB 학습 모델, 변경 가능성
     model_state_dict = torch.load(model_path, map_location=torch.device(device))
     
     model = models.resnet18(weights=ResNet18_Weights)
