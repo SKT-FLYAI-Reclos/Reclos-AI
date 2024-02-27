@@ -37,9 +37,6 @@ def initialize(**kwargs):
     model_state_dict = torch.load(model_path, map_location=torch.device(device))
     
     model = models.resnet18(weights=ResNet18_Weights)
-    # 모든 매개변수를 미세 조정 대상에서 제외합니다.
-    for param in model.parameters():
-        param.requires_grad = False
     # 마지막 Fully Connected Layer를 교체합니다.
     num_ftrs = model.fc.in_features
     model.fc = nn.Linear(num_ftrs, 2)  # 상의와 하의를 구분하므로 출력 크기는 2입니다.
