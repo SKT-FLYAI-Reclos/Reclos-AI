@@ -42,7 +42,7 @@ def init():
             "category": "all",  # Can be 'all', 'lower_body', 'upper_body', 'dresses'
             "use_png": False,  # Set to True if you prefer PNG over JPG
             "num_inference_steps": 50,  #50
-            "guidance_scale": 15,  #7.5
+            "guidance_scale": 7.5,  #7.5
             "compute_metrics": False,  # Set to True if you want to compute metrics after generation
         }
         
@@ -168,7 +168,8 @@ def clothseg_predict():
     
     """except Exception as e:
         return jsonify({'status': f'error : {str(e)}'}), 500"""
-        
+
+
 
 def printLogo():
     print("""\
@@ -181,4 +182,4 @@ def printLogo():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=9090)
+    app.run(host='0.0.0.0', port=9090)
