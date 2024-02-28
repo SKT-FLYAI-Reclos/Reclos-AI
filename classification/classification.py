@@ -36,7 +36,7 @@ def initialize(**kwargs):
     model_path = os.path.join(SETTINGS.model_path, "resnet101_rgb_v1.pth") # RGB 학습 모델, 변경 가능성
     model_state_dict = torch.load(model_path, map_location=torch.device(device))
     
-    model = models.resnet18(weights=ResNet18_Weights)
+    model = models.resnet101(weights=models.ResNet101_Weights)
     # 마지막 Fully Connected Layer를 교체합니다.
     num_ftrs = model.fc.in_features
     model.fc = nn.Linear(num_ftrs, 2)  # 상의와 하의를 구분하므로 출력 크기는 2입니다.
