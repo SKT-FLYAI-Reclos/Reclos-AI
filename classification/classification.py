@@ -1,20 +1,12 @@
-import numpy as np
-import pandas as pd
 import os
 from PIL import Image
-import matplotlib.pyplot as plt
 import argparse
 import torch
 
-from torch.utils.data import Dataset, DataLoader
 import torchvision.transforms as transforms
 import torch
 import torch.nn as nn
 from torchvision import models
-from torchvision.models import ResNet18_Weights
-from sklearn.cluster import KMeans
-import json
-from accelerate import Accelerator
 
 
 def initialize(**kwargs):
@@ -33,8 +25,7 @@ def initialize(**kwargs):
     ])
     
     # Initialize the pre-trained model
-    model_path = os.path.join(SETTINGS.model_path, "resnet101_rgb_v1.pth") # RGB 학습 모델, 변경 가능성
-    model_state_dict = torch.load(model_path, map_location=torch.device(device))
+    model_state_dict = torch.load(SETTINGS.model_path, map_location=torch.device(device))
     
     model = models.resnet101(weights=models.ResNet101_Weights)
     # 마지막 Fully Connected Layer를 교체합니다.
@@ -65,16 +56,14 @@ def run_inference(test_img, INIT_VARS=None):
     _, predicted = torch.max(test_output.data, 1)
     is_upper = True if predicted.item() == 0 else False
     
-    return {
-        'is_upper': is_upper
-    }
+    return is_upper
 
 
 CLASSIFICATION = {
     # 'mixed_precision' : False,
-    "model_path": "..\\reClos",
+    "model_path": "..\\..\\resnet101_rgb_v1.pth",
 }
 CLASSIFIY_INIT_VARS = initialize(**CLASSIFICATION)
-test_img = Image.open("data/cloth/upper_body/000001_1.jpg") # 기본값 RGB
+test_img = Image.open("../../../classification/cloth/upper_body/000001_1.jpg") # 기본값 RGB
 a = run_inference(test_img, INIT_VARS=CLASSIFIY_INIT_VARS)
 print(a)
