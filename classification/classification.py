@@ -59,11 +59,11 @@ def run_inference(test_img, INIT_VARS=None):
     return is_upper
 
 
-CLASSIFICATION = {
-    # 'mixed_precision' : False,
-    "model_path": "..\\..\\resnet101_rgb_v1.pth",
-}
-CLASSIFIY_INIT_VARS = initialize(**CLASSIFICATION)
-test_img = Image.open("../../../classification/cloth/upper_body/000001_1.jpg") # 기본값 RGB
-a = run_inference(test_img, INIT_VARS=CLASSIFIY_INIT_VARS)
-print(a)
+# CLASSIFICATION = {
+#     # 'mixed_precision' : False,
+#     "model_path": "..\\..\\resnet101_rgb_v1.pth",
+# }
+# CLASSIFIY_INIT_VARS = initialize(**CLASSIFICATION)
+# test_img = Image.open("../../../classification/cloth/upper_body/000001_1.jpg") # 기본값 RGB
+# a = run_inference(test_img, INIT_VARS=CLASSIFIY_INIT_VARS)
+# print(a)
