@@ -118,7 +118,7 @@ def ladivton_predict():
     cloth_img = PIL.Image.open(cloth_path)
     mask_img = PIL.Image.open(f'{save_dir}\\clothseg.png')
     file_path = ladivton.run_inference(id = id, cloth_img = cloth_img, mask_img = mask_img, reference_id = reference_id, index = index, save_dir = save_dir, INIT_VARS = LADIVTON_INIT_VARS, **LADIVTON_SETTINGS)
-    return jsonify({'status': 'success', 'path': file_path, 'image': base64.b64encode(open(file_path, 'rb').read()).decode('utf-8')})
+    return jsonify({'status': 'success', 'path': file_path, 'reference_id': reference_id ,'image': base64.b64encode(open(file_path, 'rb').read()).decode('utf-8')})
     
     """
     except Exception as e:
