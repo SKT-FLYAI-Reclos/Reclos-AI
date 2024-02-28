@@ -74,31 +74,33 @@ def init():
 
 @app.route("/rmbg", methods=['POST'])
 def rmbg():
-    try:
-        id = request.form['id']
-        image = request.files['image']
-        print(f'rmbg {id}')
+    # try:
+    id = request.form['id']
+    image = request.files['image']
+    print(f'rmbg {id}')
 
-        dir_path = f'.\\images\\runtime\\{id}'
-        output_path = f'{dir_path}\\rmbg'
+    dir_path = f'.\\images\\runtime\\{id}'
+    output_path = f'{dir_path}\\rmbg'
+    
+    if os.path.exists(dir_path):
+        return jsonify({'status': 'error : file already exists'})
+    else:
+        os.makedirs(dir_path)
+    
+    output_image = rembg.remove(image.read())
+    with open(f'{output_path}.png', 'wb') as f:
+        f.write(output_image)
         
-        if os.path.exists(dir_path):
-            return jsonify({'status': 'error : file already exists'})
-        else:
-            os.makedirs(dir_path)
-        
-        output_image = rembg.remove(image.read())
-        with open(f'{output_path}.png', 'wb') as f:
-            f.write(output_image)
-            
-        im = PIL.Image.open(io.BytesIO(output_image))
-        bg = PIL.Image.new("RGB", im.size, (255, 255, 255))
-        bg.paste(im, im)
-        bg.save(f'{output_path}.jpg', 'JPEG')
+    im = PIL.Image.open(io.BytesIO(output_image))
+    bg = PIL.Image.new("RGB", im.size, (255, 255, 255))
+    bg.paste(im, im)
+    bg.save(f'{output_path}.jpg', 'JPEG')
 
-        return jsonify({'status': 'success', 'path': output_path})
+    return jsonify({'status': 'success', 'path': f'{output_path}.png', 'image': base64.b64encode(output_image).decode('utf-8')})
+
+    """
     except Exception as e:
-        return jsonify({'status': f'error : {str(e)}'}), 500
+        return jsonify({'status': f'error : {str(e)}'}), 500"""
 
 
 @app.route("/ladivton", methods=['POST'])
@@ -115,7 +117,7 @@ def ladivton_predict():
     cloth_img = PIL.Image.open(cloth_path)
     mask_img = PIL.Image.open(f'{save_dir}\\clothseg.png')
     ladivton.run_inference(id = id, cloth_img = cloth_img, mask_img = mask_img, reference_id = reference_id, save_dir = save_dir, INIT_VARS = LADIVTON_INIT_VARS, **LADIVTON_SETTINGS)
-    return jsonify({'status': 'success', 'path': f'{save_dir}\\ladivton.jpg'})
+    return jsonify({'status': 'success', 'path': f'{save_dir}\\ladivton.jpg', 'image': base64.b64encode(open(f'{save_dir}\\ladivton.jpg', 'rb').read()).decode('utf-8')})
     
     """
     except Exception as e:
@@ -124,47 +126,48 @@ def ladivton_predict():
 
 @app.route("/cluster", methods=['POST'])
 def clustering():
-    try:
-        data = request.json
-        print(f'cluster post body: {data}')
-        
-        id = data['id']
-        category = data['category']
-        is_upper = category == 'upper_body'
-        img_path = f'.\\images\\runtime\\{id}\\rmbg.png'
-        
-        sorted_list = cluster.run_inference(is_upper, img_path, CLUSTER_INIT_VARS)
-        cluster_id_list = sorted_list['sorted_images_list'].tolist()
-        cluster_id_list = [i.split('_')[0] for i in cluster_id_list]
-        
-        print(f'cluster_id_list: {cluster_id_list}')
-        
-        with open(f'.\\images\\runtime\\{id}\\cluster_id_list.txt', 'w') as f:
-            for item in cluster_id_list:
-                f.write("%s\n" % item)
-            
-        return jsonify({'status': 'success', 'cluster_id_list': cluster_id_list})
+    #try:
+    data = request.json
+    print(f'cluster post body: {data}')
     
-    except Exception as e:
-        return jsonify({'status': f'error : {str(e)}'}), 500
+    id = data['id']
+    category = data['category']
+    is_upper = category == 'upper_body'
+    img_path = f'.\\images\\runtime\\{id}\\rmbg.png'
+    
+    sorted_list = cluster.run_inference(is_upper, img_path, CLUSTER_INIT_VARS)
+    cluster_id_list = sorted_list['sorted_images_list'].tolist()
+    cluster_id_list = [i.split('_')[0] for i in cluster_id_list]
+    
+    print(f'cluster_id_list: {cluster_id_list}')
+    
+    with open(f'.\\images\\runtime\\{id}\\cluster_id_list.txt', 'w') as f:
+        for item in cluster_id_list:
+            f.write("%s\n" % item)
+        
+    return jsonify({'status': 'success', 'cluster_id_list': cluster_id_list})
+    
+    """except Exception as e:
+        return jsonify({'status': f'error : {str(e)}'}), 500"""
 
 
 @app.route("/clothseg", methods=['POST'])
 def clothseg_predict():
-    try:
-        data = request.json
-        print(f'clothseg post body: {data}')
-        
-        id = data['id']
-        img_path = f'.\\images\\runtime\\{id}\\rmbg.png'
-        output_dir = f'.\\images\\runtime\\{id}'
-        
-        output_path = clothseg.run_inference(img_path, output_dir, CLOTHSEG_INIT_VARS)
-        print(f'path: {output_path}')
-        return jsonify({'status': 'success', 'path': output_path, 'image': base64.b64encode(open(output_path, 'rb').read()).decode('utf-8')})
+    #try:
+    data = request.json
+    print(f'clothseg post body: {data}')
     
-    except Exception as e:
-        return jsonify({'status': f'error : {str(e)}'}), 500
+    id = data['id']
+    img_path = f'.\\images\\runtime\\{id}\\rmbg.png'
+    output_dir = f'.\\images\\runtime\\{id}'
+    
+    output_path = clothseg.run_inference(img_path, output_dir, CLOTHSEG_INIT_VARS)
+    print(f'path: {output_path}')
+    return jsonify({'status': 'success', 'path': output_path, 'image': base64.b64encode(open(output_path, 'rb').read()).decode('utf-8')})
+    
+    """except Exception as e:
+        return jsonify({'status': f'error : {str(e)}'}), 500"""
+        
 
 def printLogo():
     print("""\
