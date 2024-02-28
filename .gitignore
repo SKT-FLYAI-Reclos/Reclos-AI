@@ -264,3 +264,4 @@ $RECYCLE.BIN/
 
 # custom
 model/
+*.pem

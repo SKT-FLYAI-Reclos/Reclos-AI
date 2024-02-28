@@ -110,14 +110,15 @@ def ladivton_predict():
     
     id = data['id']     # 1
     reference_id = data['reference_id'] # 048393 (model id in dataset)
+    index = data['index'] # 0, 1, 2
     
     save_dir = f'.\\images\\runtime\\{id}'
     cloth_path = f'{save_dir}\\rmbg.jpg'
     
     cloth_img = PIL.Image.open(cloth_path)
     mask_img = PIL.Image.open(f'{save_dir}\\clothseg.png')
-    ladivton.run_inference(id = id, cloth_img = cloth_img, mask_img = mask_img, reference_id = reference_id, save_dir = save_dir, INIT_VARS = LADIVTON_INIT_VARS, **LADIVTON_SETTINGS)
-    return jsonify({'status': 'success', 'path': f'{save_dir}\\ladivton.jpg', 'image': base64.b64encode(open(f'{save_dir}\\ladivton.jpg', 'rb').read()).decode('utf-8')})
+    file_path = ladivton.run_inference(id = id, cloth_img = cloth_img, mask_img = mask_img, reference_id = reference_id, index = index, save_dir = save_dir, INIT_VARS = LADIVTON_INIT_VARS, **LADIVTON_SETTINGS)
+    return jsonify({'status': 'success', 'path': file_path, 'image': base64.b64encode(open(file_path, 'rb').read()).decode('utf-8')})
     
     """
     except Exception as e:
