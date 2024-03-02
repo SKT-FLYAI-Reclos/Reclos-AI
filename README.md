@@ -32,7 +32,7 @@ Reclos는 중고 의류 거래 플랫폼으로, 판매/구매 과정에서의 �
 |                                                                                            |                                                                                             |                                                                                             |                                                                                             |                                                                                            |
 | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
 | <img src="https://avatars.githubusercontent.com/u/87124432?v=4" width=130px alt="박지수"/> | <img src="https://avatars.githubusercontent.com/u/116615006?v=4" width=130px alt="차형석"/> | <img src="https://avatars.githubusercontent.com/u/108793893?v=4" width=130px alt="최종휘"/> | <img src="https://avatars.githubusercontent.com/u/139847657?v=4" width=130px alt="한도현"/> | <img src="https://avatars.githubusercontent.com/u/16769822?v=4" width=130px alt="홍범순"/> |
-| [박지수](https://github.com/jisupark123)                                                   | [차형석](https://github.com/chaeyeon-yang)                                                  | [최종휘](https://github.com/chaeyeon-yang)                                                  | [한도현](https://github.com/chaeyeon-yang)                                                  | [홍범순](https://github.com/chaeyeon-yang)                                                 |
+| [박지수](https://github.com/jisupark123)                                                   | [차형석](https://github.com/hsmaro)                                                  | [최종휘](https://github.com/JongHweeC)                                                  | [한도현](https://github.com/dohyun9)                                                  | [홍범순](https://github.com/beomsun0829)                                                 |
 
 <br><br><br>
 
@@ -46,5 +46,4 @@ Reclos는 중고 의류 거래 플랫폼으로, 판매/구매 과정에서의 �
 
 <br>
 
-## AI Model
-
+##
