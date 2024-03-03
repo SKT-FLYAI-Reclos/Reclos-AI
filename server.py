@@ -39,9 +39,9 @@ def init():
             "num_vstar": 16,    #16
             "test_order": "unpaired",  # Or "paired", you need to choose based on your requirements
             "dataset": "dresscode",  # Or "dresscode", depending on which dataset you're using
-            "category": "all",  # Can be 'all', 'lower_body', 'upper_body', 'dresses'
             "use_png": False,  # Set to True if you prefer PNG over JPG
             "num_inference_steps": 50,  #50
+            "category" : "all",
             "guidance_scale": 7.5,  #7.5
             "compute_metrics": False,  # Set to True if you want to compute metrics after generation
         }
@@ -110,7 +110,7 @@ def ladivton_predict():
     
     id = data['id']     # 1
     reference_id = data['reference_id'] # 048393 (model id in dataset)
-    index = data['index'] # 0, 1, 2
+    index = data['index']
     
     save_dir = f'.\\images\\runtime\\{id}'
     cloth_path = f'{save_dir}\\rmbg.jpg'
@@ -168,6 +168,7 @@ def clothseg_predict():
     
     """except Exception as e:
         return jsonify({'status': f'error : {str(e)}'}), 500"""
+
 
 
 
