@@ -12,7 +12,7 @@
 - single_process_backend : server.py에 맞게 한 장의 사진 데이터를 입력받아 변환된 이미지를 반환하도록 구성
 - network와 options는 동일명 파일을 대체하고 process 대신 single process 사용
 
-## 실행 명령어
+## single_process 실행 명령어
 ```
 python single_process.py --image "../test_image/0002_00.jpg" --output "../test"
 ```
