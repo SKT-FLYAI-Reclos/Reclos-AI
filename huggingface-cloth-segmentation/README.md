@@ -1,5 +1,6 @@
 # huggingface-cloth-segmentation
-- 옷 사진만 mask하는 코드
+- 전체 소스파일: https://github.com/wildoctopus/huggingface-cloth-segmentation
+- 옷 사진만 masking하는 코드
 - 모델 다운로드 필요
   - https://drive.google.com/uc?id=11xTBALOeUkyuaK3l60CpkYHLTmv7k3dY
   - app.py와 동일 위치에 model 폴더 생성 후 폴더 안에 위치
