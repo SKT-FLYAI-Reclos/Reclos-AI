@@ -8,7 +8,8 @@
 ## 수정사항
 - network : 기존에서 변환된 파라미터로 변경
 - options : output 기본값 제거
-- single_process : 불필요 함수 및 과정 제거
+- single_process : 불필요 함수 및 과정 제거, 한장의 사진만 실행되도록 구성
+- single_process_backend : server.py에 맞게 한 장의 사진 데이터를 입력받아 변환된 이미지를 반환하도록 구성
 - network와 options는 동일명 파일을 대체하고 process 대신 single process 사용
 
 ## 실행 명령어
