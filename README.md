@@ -3,7 +3,7 @@
 # Reclos - 가상 피팅 AI를 통한 초간편 패션 중고 거래 플랫폼
 
 <p align="left">
-<img src="https://i.namu.wiki/i/4hG5ba-qdaBMPNsigVir10WjT-4Gwu3RpUo1x3SFOYATsfbc-4SZXXX5YCU94Gk4E_LIUT1YsOwZpOEHDsj67z0-43Ro1kD1f2ELphwLVuE55YYEd53locY7OrOOJycUzFwggRA8D68i2sVM5B9v6A.webp" width="200" />
+<img src="https://i.namu.wiki/i/SxC1sboYoYWsFw9ZupujACxtsWlh7OGk27fGXBhJDWCCD_5RMI6-GT04-Xl8YUgmGF5DFm1rQx8XwEYTj_hDCpFlamDWAvnAX7Br9qMChBoKlgYa9RR3Si3aienFOhlnst8Lb1T_CoeyX16C_g7fAw.webp" width="200" />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
 <!-- <img src="https://github.com/SKT-FLYAI-Reclos/Reclos-Frontend/assets/87124432/22af9e19-bac3-475f-9061-a6082e9afb4d" width=130/> -->
