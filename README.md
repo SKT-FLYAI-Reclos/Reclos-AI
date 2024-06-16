@@ -3,15 +3,19 @@
 # Reclos - 가상 피팅 AI를 통한 초간편 패션 중고 거래 플랫폼
 
 <p align="left">
-<img src="https://i.namu.wiki/i/SxC1sboYoYWsFw9ZupujACxtsWlh7OGk27fGXBhJDWCCD_5RMI6-GT04-Xl8YUgmGF5DFm1rQx8XwEYTj_hDCpFlamDWAvnAX7Br9qMChBoKlgYa9RR3Si3aienFOhlnst8Lb1T_CoeyX16C_g7fAw.webp" width="200" />
+<img src="https://github.com/SKT-FLYAI-Reclos/Reclos-AI/assets/87124432/0aece641-b66e-4ac3-9dba-4224692ce6f3" width="200" />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
 
 <!-- <img src="https://github.com/SKT-FLYAI-Reclos/Reclos-Frontend/assets/87124432/22af9e19-bac3-475f-9061-a6082e9afb4d" width=130/> -->
   
 <b>SKT FLY AI 4기 팀별 부문 우수상</b>
 
-<br /><br />
 
+<img width="1116" alt="스크린샷 2024-06-16 오후 5 02 36" src="https://github.com/SKT-FLYAI-Reclos/Reclos-AI/assets/87124432/620d2d71-9f61-4042-bf06-f16f3aa41eaf">
+<img width="1185" alt="스크린샷 2024-06-16 오후 5 04 06" src="https://github.com/SKT-FLYAI-Reclos/Reclos-AI/assets/87124432/ffc933ba-38ad-48b8-99a1-98ec4366667b">
+
+<br /><br />
 </p>
 
 ## 프로젝트 소개
